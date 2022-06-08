@@ -1,4 +1,5 @@
 const http = require("http");
+const fs = require("fs");
 
 const port = 3000;
 
@@ -15,9 +16,13 @@ const server = http.createServer((request, response) => {
             return response.end();
         })
     } else {
-        response.end(`
-            <h1>Bem vindo ${name}</h1>
-        `);
+        fs.appendFile("names.txt", name+",\r\n", (err, data) => {
+                response.writeHead(302, {
+                    Location: '/'
+                })
+
+                return response.end();
+        });
     }
 });
 
